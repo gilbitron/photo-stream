@@ -17,8 +17,9 @@ Heavily inspired by [maxvoltar/photo-stream](https://github.com/maxvoltar/photo-
 
 ## Usage
 
-Getting started in two simple steps:
+Get started in three simple steps:
 
+1. Run `composer install`
 1. Add your photos to `/photos`
 1. Run `./build`
 
