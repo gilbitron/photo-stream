@@ -6,3 +6,4 @@
 !/public/photos/thumbs/.gitkeep
 /public/index.html
 /vendor
+composer.lock

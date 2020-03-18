@@ -1,5 +1,10 @@
 {
+    "name": "gilbitron/photo-stream",
+    "description": "A stupidly simple website generator for your photos. ",
+    "homepage": "https://github.com/gilbitron/photo-stream",
+    "license": "MIT",
     "require": {
+        "php": ">=7.0",
         "intervention/image": "^2.5"
     }
 }
