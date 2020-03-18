@@ -1,0 +1,8 @@
+/photos/*
+!/photos/.gitkeep
+/public/photos/large/*
+!/public/photos/large/.gitkeep
+/public/photos/thumbs/*
+!/public/photos/thumbs/.gitkeep
+/public/index.html
+/vendor

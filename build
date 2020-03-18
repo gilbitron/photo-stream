@@ -1,0 +1,53 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/bootstrap.php';
+$config = require BASE_DIR . '/config.php';
+
+ini_set('memory_limit', BUILD_MEMORY_LIMIT);
+
+$manager = new Intervention\Image\ImageManager();
+$photos = glob(BASE_DIR . '/photos/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+
+echo 'Processing ' . number_format(count($photos)) . ' images...' . "\n";
+
+foreach ($photos as $photo) {
+    $largePath = str_replace(BASE_DIR . '/photos', PUBLIC_DIR . '/photos/large', $photo);
+    $thumbsPath = str_replace(BASE_DIR . '/photos', PUBLIC_DIR . '/photos/thumbs', $photo);
+
+    if (!file_exists($largePath)) {
+        echo 'Creating ' . str_replace(PUBLIC_DIR, '', $largePath) . '...' . "\n";
+
+        $manager->make($photo)
+            ->resize($config['large_size'], $config['large_size'], function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })
+            ->save($largePath, 100);
+    }
+
+    if (!file_exists($thumbsPath)) {
+        echo 'Creating ' . str_replace(PUBLIC_DIR, '', $thumbsPath) . '...' . "\n";
+
+        $manager->make($photo)
+            ->resize($config['thumb_size'], $config['thumb_size'], function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })
+            ->save($thumbsPath, 100);
+    }
+}
+
+echo "Generating HTML...\n";
+
+if (file_exists(BASE_DIR . '/template/index.php')) {
+    ob_start();
+    require BASE_DIR . '/template/index.php';
+    $output = ob_get_clean();
+    file_put_contents(PUBLIC_DIR . '/index.html', $output);
+} else {
+    echo "Error: missing /template/index.php\n";
+    exit(1);
+}
+
+echo "Finished\n";
